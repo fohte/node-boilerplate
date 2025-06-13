@@ -16,7 +16,7 @@
     "@tsconfig/bun": "1.0.8",
     "@types/bun": "1.2.16",
     "@types/node": "22.15.31",
-    "concurrently": "8.2.2",
+    "concurrently": "9.1.2",
     "eslint": "8.57.1",
     "prettier": "3.5.3",
     "typescript": "5.8.3",
