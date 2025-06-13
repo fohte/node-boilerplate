@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@fohte/eslint-config": "0.0.4",
+    "@tsconfig/bun": "1.0.8",
     "@types/bun": "latest",
     "@types/node": "^22.5.0",
     "concurrently": "^8.2.2",
