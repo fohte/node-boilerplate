@@ -1,6 +1,7 @@
 {
   "name": "node-boilerplate",
   "private": true,
+  "type": "module",
   "scripts": {
     "lint": "eslint .",
     "format:eslint": "eslint --fix .",
