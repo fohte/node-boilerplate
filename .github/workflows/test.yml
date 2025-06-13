@@ -3,9 +3,6 @@ name: Test
 on:
   push:
 
-permissions:
-  contents: write
-
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
