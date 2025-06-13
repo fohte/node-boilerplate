@@ -1,45 +1,43 @@
 name: Test
 
-on:
-  push:
-
-permissions:
-  contents: write
+on: push
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/create-github-app-token@v1
-        id: app-token
-        with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-
       - uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
 
       - name: Cache pre-commit
         uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
-          key: ${{ runner.os }}-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
-            ${{ runner.os }}-pre-commit-
+          key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
 
       - name: Run pre-commit
-        id: pre-commit
-        run: |
-          pip install pre-commit
-          pre-commit run --all-files
-
-      - name: Commit formatted files
-        if: ${{ !cancelled() }}
-        uses: suzuki-shunsuke/commit-action@v0.0.7
+        uses: pre-commit/action@v3.0.1
         with:
-          commit_message: 'style: auto-format'
-          workflow: deny
-          github_token: ${{ steps.app-token.outputs.token }}
+          extra_args: --all-files --color=always
+
+      - name: Type check
+        run: bun run test:type
+
+      - name: Run tests
+        run: bun test
