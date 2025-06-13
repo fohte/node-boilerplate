@@ -1,8 +1,6 @@
 {
   "name": "node-boilerplate",
-  "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "lint": "eslint .",
     "format:eslint": "eslint --fix .",
@@ -20,6 +18,5 @@
     "prettier": "^3.5.3",
     "typescript": "^5.6.0",
     "vitest": "^2.1.6"
-  },
-  "packageManager": "bun@1.1.0"
+  }
 }
